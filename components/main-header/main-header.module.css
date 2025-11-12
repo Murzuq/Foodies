@@ -107,7 +107,7 @@
   font-size: 1.5rem;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 835px) {
   .header {
     padding: 2rem 1rem;
   }
