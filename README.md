@@ -40,7 +40,7 @@ Make sure you have Node.js installed on your machine (v18.x or later is recommen
 
     ```bash
     git clone https://github.com/Murzuq/Foodies.git
-    cd foodies
+    cd Foodies
     ```
 
 2.  Install the necessary NPM packages:
