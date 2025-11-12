@@ -40,3 +40,10 @@ body {
   font-weight: 500;
   color: #ddd8d8;
 }
+
+@media (max-width: 768px) {
+  .not-found h1,
+  .error h1 {
+    font-size: 3rem;
+  }
+}

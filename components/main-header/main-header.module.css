@@ -2,23 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 2rem 1rem;
-}
-
-@media (min-width: 768px) {
-  .header {
-    padding: 2rem 10%;
-  }
-}
-
-.nav ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  gap: 1.5rem;
-  /* font-family: 'Montserrat', sans-serif; */
-  font-size: 1.25rem;
+  padding: 2rem 10%;
 }
 
 .logo {
@@ -40,4 +24,97 @@
   height: 5rem;
   object-fit: contain;
   filter: drop-shadow(0 0 0.75rem rgba(0, 0, 0, 0.5));
+}
+
+.nav {
+  display: block;
+}
+
+.nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 1.5rem;
+  font-size: 1.25rem;
+}
+
+.nav a {
+  text-decoration: none;
+  color: #ddd6cb;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+}
+
+.nav a:hover,
+.nav a:active {
+  color: #f9b241;
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 2rem;
+  height: 2rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 11;
+}
+
+.hamburger span {
+  width: 2rem;
+  height: 0.25rem;
+  background: #f9e8d2;
+  border-radius: 10px;
+  transition: all 0.3s linear;
+  position: relative;
+  transform-origin: 1px;
+}
+
+.mobileNavOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mobileNav {
+  background: #2c2a2a;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.mobileNav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+
+.mobileNav li {
+  margin: 1rem 0;
+  font-size: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 2rem 1rem;
+  }
+  .nav {
+    display: none;
+  }
+  .hamburger {
+    display: flex;
+  }
 }

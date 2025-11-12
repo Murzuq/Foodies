@@ -96,3 +96,9 @@
   color: #979797;
   cursor: not-allowed;
 }
+
+@media (max-width: 768px) {
+  .row {
+    flex-direction: column;
+  }
+}
