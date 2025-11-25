@@ -163,8 +163,8 @@ const dummyMeals = [
   },
 ];
 
-async function seed() {
-  const client = await db.connect();
+async function seed(client) {
+  // const client = await db.connect(); // No longer needed here
 
   await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
   await client.sql`
@@ -202,7 +202,7 @@ async function seed() {
 
 async function main() {
   const client = await db.connect();
-  await seed(client);
+  await seed(client); // Pass the connected client to the seed function
   await client.end();
 }
 
