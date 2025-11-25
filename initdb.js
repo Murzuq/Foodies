@@ -1,5 +1,4 @@
-const sql = require("better-sqlite3");
-const db = sql("meals.db");
+const { db } = require("@vercel/postgres");
 
 const dummyMeals = [
   {
@@ -164,38 +163,52 @@ const dummyMeals = [
   },
 ];
 
-db.prepare(
-  `
-   CREATE TABLE IF NOT EXISTS meals (
-       id INTEGER PRIMARY KEY AUTOINCREMENT,
-       slug TEXT NOT NULL UNIQUE,
-       title TEXT NOT NULL,
-       image TEXT NOT NULL,
-       summary TEXT NOT NULL,
-       instructions TEXT NOT NULL,
-       creator TEXT NOT NULL,
-       creator_email TEXT NOT NULL
+async function seed(client) {
+  // const client = await db.connect(); // No longer needed here
+
+  await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+  await client.sql`
+    CREATE TABLE IF NOT EXISTS meals (
+      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+      slug TEXT NOT NULL UNIQUE,
+      title TEXT NOT NULL,
+      image TEXT NOT NULL,
+      summary TEXT NOT NULL,
+      instructions TEXT NOT NULL,
+      creator TEXT NOT NULL,
+      creator_email TEXT NOT NULL
+    );
+  `;
+
+  console.log(`Created "meals" table`);
+
+  const insertedMeals = await Promise.all(
+    dummyMeals.map(
+      (meal) => client.sql`
+        INSERT INTO meals (slug, title, image, summary, instructions, creator, creator_email)
+        VALUES (${meal.slug}, ${meal.title}, ${meal.image}, ${meal.summary}, ${meal.instructions}, ${meal.creator}, ${meal.creator_email})
+        ON CONFLICT (slug) DO NOTHING;
+      `
     )
-`
-).run();
+  );
 
-async function initData() {
-  const stmt = db.prepare(`
-      INSERT INTO meals VALUES (
-         null,
-         @slug,
-         @title,
-         @image,
-         @summary,
-         @instructions,
-         @creator,
-         @creator_email
-      )
-   `);
+  console.log(`Seeded ${insertedMeals.length} meals`);
 
-  for (const meal of dummyMeals) {
-    stmt.run(meal);
-  }
+  return {
+    createTable: true,
+    meals: insertedMeals,
+  };
 }
 
-initData();
+async function main() {
+  const client = await db.connect();
+  await seed(client); // Pass the connected client to the seed function
+  await client.end();
+}
+
+main().catch((err) => {
+  console.error(
+    "An error occurred while attempting to seed the database:",
+    err
+  );
+});
